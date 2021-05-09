@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/song-share/static/css/main.327eb858.chunk.css",
+    "main.js": "/song-share/static/js/main.66e21077.chunk.js",
+    "main.js.map": "/song-share/static/js/main.66e21077.chunk.js.map",
+    "runtime-main.js": "/song-share/static/js/runtime-main.09c26cb5.js",
+    "runtime-main.js.map": "/song-share/static/js/runtime-main.09c26cb5.js.map",
+    "static/css/2.acd75131.chunk.css": "/song-share/static/css/2.acd75131.chunk.css",
+    "static/js/2.d98356d6.chunk.js": "/song-share/static/js/2.d98356d6.chunk.js",
+    "static/js/2.d98356d6.chunk.js.map": "/song-share/static/js/2.d98356d6.chunk.js.map",
+    "static/js/3.228cb449.chunk.js": "/song-share/static/js/3.228cb449.chunk.js",
+    "static/js/3.228cb449.chunk.js.map": "/song-share/static/js/3.228cb449.chunk.js.map",
+    "index.html": "/song-share/index.html",
+    "static/css/2.acd75131.chunk.css.map": "/song-share/static/css/2.acd75131.chunk.css.map",
+    "static/css/main.327eb858.chunk.css.map": "/song-share/static/css/main.327eb858.chunk.css.map",
+    "static/js/2.d98356d6.chunk.js.LICENSE.txt": "/song-share/static/js/2.d98356d6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.09c26cb5.js",
+    "static/css/2.acd75131.chunk.css",
+    "static/js/2.d98356d6.chunk.js",
+    "static/css/main.327eb858.chunk.css",
+    "static/js/main.66e21077.chunk.js"
+  ]
+}
