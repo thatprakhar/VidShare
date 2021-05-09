@@ -4,7 +4,11 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import SongList from './SongList';
 
-const Main: React.FC<{}> = () => {
+interface MainProps {
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Main: React.FC<MainProps> = ({ setLoading }) => {
     return (
         <div className='main'>
             <div className='nav'>

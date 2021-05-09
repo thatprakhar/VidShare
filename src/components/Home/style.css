@@ -55,9 +55,17 @@
 .avatar {
     border-radius: 800em;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: url('./user-avatar.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.avatar > img {
+    border-radius: 800em;
+    object-fit: scale-down;
+}
+
+.avatar > input {
+    display: none;
 }
 
 .profile > p {
@@ -67,7 +75,7 @@
 }
 
 .main {
-    z-index: 99;
+    z-index: 1;
     background: #ffffff;
     width: 82%;
     display: flex;
