@@ -1,0 +1,184 @@
+.home {
+    display: flex;
+}
+
+.sidebar {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 20%;
+    height: 100vh;
+}
+
+.sidebar-item {
+    width: 95%;
+    text-align: center;
+    cursor: pointer;
+    color: #a8a8a8;
+    font-weight: 700;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-item > p {
+    margin-top: 1em;
+}
+
+.sidebar-item-selected {
+    color: white;
+    background: linear-gradient(to right, #fb6f6f, #ff4f4f);
+    border-top-right-radius: 100em;
+    border-bottom-right-radius: 100em;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.sidebar-item:hover {
+    color: white;
+    background: linear-gradient(to right, #fb6f6f, #ff4f4f);
+    border-top-right-radius: 100em;
+    border-bottom-right-radius: 100em;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding-top: 5em;
+}
+
+.avatar {
+    border-radius: 800em;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: url('./user-avatar.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.profile > p {
+    color: black;
+    font-weight: 600;
+    margin-top: 1em;
+}
+
+.main {
+    z-index: 99;
+    background: #ffffff;
+    width: 82%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.nav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-items: space-between;
+}
+
+.search-container {
+    width: 80%;
+    padding-left: 2em;
+}
+
+.search-input {
+    background: none;
+    border: none;
+    background: #f1f1f1;
+    padding: 1em 1em 1em 1em;
+    border-radius: 2em;
+    width: 100%;
+    margin-top: 1em;
+}
+
+.nav-item-list {
+   padding-left: 5em;
+}
+
+
+.nav > div > ul {
+    display: block;
+    list-style-type: none;
+    overflow: hidden;
+    margin-top: 1em;
+}
+
+.nav > div > ul > li {
+    float: left;
+    margin: 1em;
+}
+
+.song-list-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2em 2em 2em 2em;
+}
+
+.song-list-title > h3 {
+    font-weight: 600;
+}
+
+.song-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    margin-top: 0.5em;
+}
+
+.song {
+    cursor: pointer;
+}
+
+.song:hover {
+    box-shadow: 0px 0px 5px #fff;
+}
+
+.song:not(:first-child) {
+    margin-left: 5em;
+}
+
+.song > img {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 0.4em;
+}
+
+
+.song-title {
+    font-weight: 600;
+    padding: 1em;
+    padding-left: 0em;
+    padding-bottom: 0em;
+    font-size: 1rem;
+}
+
+.artist-title {
+    font-weight: 300;
+    color: grey;
+}
+
+
+@media screen and (max-width: 1000px) {
+    .sidebar {
+        display: none;
+    }
+    .main {
+        width: 100%;
+    }
+}
+
+.logout-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
+}
