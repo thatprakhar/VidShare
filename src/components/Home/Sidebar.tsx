@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 import { Button } from '@material-ui/core';
-import {UserContext} from '../../userProvider';
+import {mediaList, UserContext} from '../../userProvider';
 import { useHistory } from 'react-router-dom';
 
 import defaultImage from './user-avatar.jpeg';
@@ -10,9 +10,10 @@ import { auth, firebaseStorage } from '../../firebase-config';
 
 interface SidebarProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setSelectedMediaList: React.Dispatch<React.SetStateAction<mediaList | null>>
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ setLoading }) => {
+const Sidebar: React.FC<SidebarProps> = ({ setLoading, setSelectedMediaList }) => {
 
     const [selected, setSelected] = React.useState<number>(0);
    
@@ -21,7 +22,6 @@ const Sidebar: React.FC<SidebarProps> = ({ setLoading }) => {
     const history = useHistory();
 
     React.useEffect(() => {
-        console.log(user.user?.photoURL);
     }, [user])
 
     const min = (a: number, b: number) => {
@@ -29,8 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setLoading }) => {
     }
 
     const renderList = () => {
-        const list = ['Top Picks', 'Discover', 'Favourites', 'Playlists', 'Messages'];
-
+        const list =  user.mediaLists;
 
         let elems: JSX.Element[] = [];
 
@@ -42,11 +41,13 @@ const Sidebar: React.FC<SidebarProps> = ({ setLoading }) => {
                     }
                     onClick={e => {
                         setSelected(idx);
+                        console.log(item);
+                        setSelectedMediaList(item);
                     }}
                     key={idx}
                 >
                     <p>
-                        {item}
+                        {item.list_title}
                     </p>
                 </div>
             )

@@ -9,6 +9,8 @@
     justify-content: flex-start;
     width: 20%;
     height: 100vh;
+    background: white;
+    overflow-y: scroll;
 }
 
 .sidebar-item {
@@ -76,7 +78,7 @@
 
 .main {
     z-index: 1;
-    background: #ffffff;
+    background: #ffd2d213;
     width: 82%;
     display: flex;
     flex-direction: column;
@@ -92,8 +94,12 @@
 }
 
 .search-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: 80%;
-    padding-left: 2em;
+    padding: 2em;
+    padding-top: 1em;
 }
 
 .search-input {
@@ -102,7 +108,7 @@
     background: #f1f1f1;
     padding: 1em 1em 1em 1em;
     border-radius: 2em;
-    width: 100%;
+    width: 90%;
     margin-top: 1em;
 }
 
@@ -141,19 +147,33 @@
     margin-top: 0.5em;
 }
 
-.song {
-    cursor: pointer;
-}
-
 .song:hover {
     box-shadow: 0px 0px 5px #fff;
 }
 
-.song:not(:first-child) {
+.song {
     margin-left: 5em;
 }
 
+.ytvid {
+    margin-left: 5em;
+}
+
+.song:first-child {
+    margin-left: 0em;
+}
+
+.ytvid:first-child {
+    margin-left: 0em;
+}
+
 .song > img {
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 0.4em;
+}
+
+.ytvid > img {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 0.4em;
 }
@@ -161,17 +181,26 @@
 
 .song-title {
     font-weight: 600;
-    padding: 1em;
-    padding-left: 0em;
-    padding-bottom: 0em;
-    font-size: 1rem;
+    padding: 1rem;
+    padding-left: 0rem;
+    padding-bottom: 0rem;
+    font-size: 1.2rem;
+    width: 100%;
+    word-wrap: break-word;
 }
 
 .artist-title {
     font-weight: 300;
     color: grey;
+    max-width: 15rem;
+    word-wrap: break-word;
+    font-size: 1rem;
+    text-decoration: none;
 }
 
+a:hover {
+    color: grey;
+}
 
 @media screen and (max-width: 1000px) {
     .sidebar {
@@ -189,4 +218,12 @@
     justify-content: flex-end;
     align-items: center;
     padding: 1rem;
+}
+
+
+.iframe-container > iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

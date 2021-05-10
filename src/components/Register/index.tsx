@@ -93,12 +93,11 @@ export default function SignUp() {
             const userRef = firestore.doc(`users/${user.uid}`);
             const snapshot = await userRef.get();
             if (!snapshot.exists) {
-              const { email, displayName, photoURL } = user;
+              const { email, displayName } = user;
               try {
                 await userRef.set({
                   displayName,
                   email,
-                  photoURL,
                 });
               } catch (error) {
                 console.error("Error creating user document", error);

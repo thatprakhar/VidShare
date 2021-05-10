@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import Main from './Main';
 import { Backdrop, CircularProgress} from '@material-ui/core';
-import {UserContext} from '../../userProvider';
+import {mediaList, UserContext} from '../../userProvider';
 
 import './style.css';
 import { Redirect } from 'react-router-dom';
@@ -12,7 +12,25 @@ import { Redirect } from 'react-router-dom';
 const Home: React.FC<{}> = () => {
 
     const user = React.useContext(UserContext);
+    const [selectedMediaList, setSelectedMediaList] = React.useState<mediaList | null>(null);
+
+
     const [loading, setLoading] = React.useState<boolean>(false);
+
+
+    React.useEffect(() => {
+        if (user && user.mediaLists.length > 0) {
+            setSelectedMediaList(user.mediaLists[0]);
+        }
+    }, [user])
+
+    if (user.loading) {
+        return (
+            <Backdrop open={user.loading}>
+                <CircularProgress />
+            </Backdrop>
+        )
+    }
 
     if (user.user === null) {
         return (
@@ -24,8 +42,8 @@ const Home: React.FC<{}> = () => {
         <div
             className='home'
         >
-            <Sidebar setLoading={setLoading}/>
-            <Main setLoading={setLoading}/>
+            <Sidebar setLoading={setLoading} setSelectedMediaList={setSelectedMediaList}/>
+            <Main setLoading={setLoading} selectedMediaList={selectedMediaList}/>
             <Backdrop open={loading} style={{
                 zIndex: 99,
                 color: '#fff',
