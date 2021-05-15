@@ -1,8 +1,8 @@
 import React from 'react';
-import {IconButton} from '@material-ui/core';
+import {IconButton, Dialog, DialogContent, DialogTitle, List, ListItem, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { firestore } from '../../firebase-config';
-
+import { UserContext } from '../../userProvider';
 
 export type Song = {
     key: string
@@ -50,31 +50,43 @@ export type YTVideo = {
     video_id: string
 }
 
-const createElementFromHTML = (videoId: string) => {
+const createElementFromHTML = (
+    videoId: string
+) => {
 
-    const htmlString = `\u003ciframe width=\u0022200\u0022 height=\u0022113\u0022 src=\u0022https://www.youtube.com/embed/${videoId}?feature=oembed\u0022 frameborder=\u00220\u0022 allow=\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\u0022 allowfullscreen\u003e\u003c/iframe\u003e`;
+    const videoWidth = (window.innerWidth < 1000 ? window.innerWidth / 1.3 : window.innerWidth / 4)
+
+    const videoFrame = <iframe
+    title={videoId}
+    src={`https://www.youtube.com/embed/${videoId}?feature=oembed`} frameBorder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowFullScreen/>;
+    
     return (
         <div 
             key='1'
-            dangerouslySetInnerHTML={{
-                __html: htmlString
-            }}
             style={{
-                width: min(window.innerHeight, window.innerWidth)/2.5,
-                height: min(window.innerHeight, window.innerWidth)/4
+                width: videoWidth,
+                height: window.innerHeight / 4,
             }}
             className='iframe-container'
+
         >
+            {videoFrame}
         </div>
     )
 }
 
-const renderYTVideo = (video: YTVideo, isSearchResult: boolean | undefined) => {
+const renderYTVideo = (
+    video: YTVideo, 
+    isSearchResult: boolean | undefined,
+    setSelectedVideo: React.Dispatch<React.SetStateAction<YTVideo | undefined>>,
+    setAddingVideoToList:  React.Dispatch<React.SetStateAction<boolean>>
+) => {
 
     let elems = [];
 
     if (video.video_id) {
-        elems.push(createElementFromHTML(video.video_id));
+        const elem = createElementFromHTML(video.video_id);
+        elems.push(elem);
     } else {
         elems.push(
                 <img 
@@ -91,16 +103,8 @@ const renderYTVideo = (video: YTVideo, isSearchResult: boolean | undefined) => {
     if (isSearchResult) {
         elems.push(
             <IconButton key='3' onClick={() => {
-                firestore.collection('top picks').doc(video.video_id).set({
-                    video_id: video.video_id,
-                    author_name: video.author_name,
-                    thumbnail_url: video.thumbnail_url,
-                    title: video.title
-                })
-                .then(() => {
-                    console.log('added');
-                })
-                .catch(err => console.log('err'))
+                setSelectedVideo(video);
+                setAddingVideoToList(true);
             }}>
                 <AddIcon />
             </IconButton>
@@ -121,22 +125,41 @@ const renderYTVideo = (video: YTVideo, isSearchResult: boolean | undefined) => {
 
 }
 
-interface SongListProps {
+interface MediaListProps {
     mediaListTitle: string
     mediaList: Array<Song | YTVideo>
     isSearchResult?: boolean
 }
 
 
-const MediaList: React.FC<SongListProps> = ({
+const MediaList: React.FC<MediaListProps> = ({
     mediaListTitle,
     mediaList,
     isSearchResult
 }) => {
 
-    React.useEffect(() => {
+    const [selectedVideo, setSelectedVideo] = React.useState<YTVideo>();
+    const [addingVideoToList, setAddingVideoToList] = React.useState<boolean>(false);
 
-    }, []);
+    const [loading, setLoading] = React.useState<boolean>(false);
+
+    const { mediaLists } = React.useContext(UserContext);
+
+    const addVideoToList = (list_title: string) => {
+        if (!selectedVideo) return;
+        setLoading(true);
+        firestore.collection(list_title).doc(selectedVideo.video_id).set({
+            video_id: selectedVideo.video_id,
+            author_name: selectedVideo.author_name,
+            thumbnail_url: selectedVideo.thumbnail_url,
+            title: selectedVideo.title
+        })
+        .then(() => {
+            setLoading(false);
+            setAddingVideoToList(false);
+        })
+        .catch(err => console.log('err'))
+    }
 
     return (
         <div
@@ -154,13 +177,28 @@ const MediaList: React.FC<SongListProps> = ({
                         if ('subtitle' in media) {
                             return renderSong(media);
                         } else {
-                            return renderYTVideo(media, isSearchResult);
+                            return renderYTVideo(media, isSearchResult, setSelectedVideo, setAddingVideoToList);
                         }
 
                     })
                 }
             </div>
-
+            <Dialog onClose={() => setAddingVideoToList(false)} open={addingVideoToList}>
+            <DialogTitle>Choose list to add video to</DialogTitle>
+            <List>
+                {mediaLists.map((list) => (
+                <ListItem button onClick={() => addVideoToList(list.list_title)} key={list.list_title}>
+                    {list.list_title}
+                </ListItem>
+                ))}
+            </List>
+            {
+                loading &&
+                <DialogContent>
+                    <CircularProgress />
+                </DialogContent>
+            }
+            </Dialog>
         </div>
     )
 }

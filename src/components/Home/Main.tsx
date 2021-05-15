@@ -1,9 +1,8 @@
 import React from 'react';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { IconButton, CircularProgress } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import MenuIcon from '@material-ui/icons/Menu';
 import MediaList from './MediaList';
 import { YTVideo } from './MediaList';
 import {mediaList} from '../../userProvider';
@@ -12,9 +11,10 @@ import {mediaList} from '../../userProvider';
 interface MainProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
     selectedMediaList: mediaList | null
+    openSidebar: () => void
 }
 
-const Main: React.FC<MainProps> = ({ setLoading, selectedMediaList }) => {
+const Main: React.FC<MainProps> = ({ setLoading, selectedMediaList, openSidebar }) => {
 
     const [searching, setSearching] = React.useState<boolean>(false);
     const [searchQuery, setSearchQuery] = React.useState<string>('');
@@ -51,6 +51,14 @@ const Main: React.FC<MainProps> = ({ setLoading, selectedMediaList }) => {
     return (
         <div className='main'>
             <div className='nav'>
+                {
+                    window.innerWidth < 1000 &&
+                    <IconButton
+                        onClick={() => openSidebar()}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                }
                 <div className='search-container'>
                     <input 
                         placeholder='Search for videos...'
@@ -75,17 +83,6 @@ const Main: React.FC<MainProps> = ({ setLoading, selectedMediaList }) => {
                         </IconButton>
                     }
                 </div>
-
-                <div className='nav-item-list'>
-                    <ul>
-                        <li>
-                            <NotificationsIcon />
-                        </li>
-                        <li>
-                            <AccountCircleIcon />
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             {
@@ -103,7 +100,6 @@ const Main: React.FC<MainProps> = ({ setLoading, selectedMediaList }) => {
                         <></>
             
             }
-
         </div>
     )
 }

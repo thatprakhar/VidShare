@@ -16,7 +16,14 @@ interface UserContextProps {
 }
 
 export const UserContext = createContext({ user: null } as UserContextProps);
-class UserProvider extends Component {
+
+interface UserProviderState {
+  user: firebase.User | null
+  loading: boolean
+  mediaLists: Array<mediaList>
+}
+
+class UserProvider extends Component<{},UserProviderState> {
   state = {
     user: null,
     loading: true,
@@ -30,21 +37,39 @@ class UserProvider extends Component {
         loading: false,
       });
       if (userAuth) {
-        const top_picks_ref = firestore.collection('top picks');
-        top_picks_ref.get()
+        this.setState({
+          loading: true
+        })
+        const lists_ref = firestore.collection('lists');
+        lists_ref.get()
         .then(snapshot => {
-            this.setState({
-              mediaLists: [
-                {
-                  list_title: 'Top Picks',
-                  mediaItems: snapshot.docs.map(doc => doc.data())
-                }
-            ]
-            });
+          snapshot.docs.forEach(doc => {
+            const list_title = doc.data().list_title;
+            const top_picks_ref = firestore.collection(list_title);
+            top_picks_ref.get()
+            .then(snapshot => {
+                this.setState(prevState => ({
+                  mediaLists: [
+                    ...prevState.mediaLists,{
+                      list_title,
+                      mediaItems: (snapshot.docs.map(doc => doc.data()) as YTVideo[])
+                    } as mediaList
+                ]
+                }));
+            })
+          })
+          this.setState({
+            loading: false
+          })
+        })
+        .catch(err => {
+          console.error(err)
+          this.setState({
+            loading: false
+          })
         })
       }
     });
-
   };
 
   render() {

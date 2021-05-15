@@ -1,22 +1,24 @@
 import React from 'react';
 import './style.css';
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import {mediaList, UserContext} from '../../userProvider';
 import { useHistory } from 'react-router-dom';
 
-import defaultImage from './user-avatar.jpeg';
+import defaultImage from './user-avatar.png';
 
 import { auth, firebaseStorage } from '../../firebase-config';
 
 interface SidebarProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
     setSelectedMediaList: React.Dispatch<React.SetStateAction<mediaList | null>>
+    setShowCreateNewListDialog: React.Dispatch<React.SetStateAction<boolean>>
+    closeSidebar: () => void
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ setLoading, setSelectedMediaList }) => {
+const Sidebar: React.FC<SidebarProps> = ({ setLoading, setSelectedMediaList, setShowCreateNewListDialog, closeSidebar }) => {
 
     const [selected, setSelected] = React.useState<number>(0);
-   
 
     const user = React.useContext(UserContext);
     const history = useHistory();
@@ -41,8 +43,8 @@ const Sidebar: React.FC<SidebarProps> = ({ setLoading, setSelectedMediaList }) =
                     }
                     onClick={e => {
                         setSelected(idx);
-                        console.log(item);
                         setSelectedMediaList(item);
+                        closeSidebar();
                     }}
                     key={idx}
                 >
@@ -52,14 +54,30 @@ const Sidebar: React.FC<SidebarProps> = ({ setLoading, setSelectedMediaList }) =
                 </div>
             )
         });
-        
+        elems.push(
+            <div
+            className='sidebar-item-button'
+            key={list.length + 1}
+        >
+            <Button variant='outlined' color='secondary' onClick={() => setShowCreateNewListDialog(true)}>
+                Create new list
+            </Button>
+        </div>
+        )
         return elems;
     }
 
     return (
         <div
             className='sidebar'
+            id='side'
         >
+        {
+            window.innerWidth < 1000 && 
+            <IconButton onClick={() => closeSidebar()}>
+                <CloseIcon />
+            </IconButton>
+        }
         <div
             className='profile'
         >
@@ -132,8 +150,6 @@ const Sidebar: React.FC<SidebarProps> = ({ setLoading, setSelectedMediaList }) =
                 </Button>
             </div>
         </div>
-
-        
     )
 };
 
