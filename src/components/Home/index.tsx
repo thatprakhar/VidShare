@@ -47,6 +47,7 @@ const Home: React.FC<{}> = () => {
 
 
     const openSidebar = () => {
+        if (window.innerHeight >= 1000) return;
         const elem = document.getElementById('side');
         if (!elem) return;
         elem.style.width = '90vw';
@@ -54,6 +55,7 @@ const Home: React.FC<{}> = () => {
     }
 
     const closeSidebar = () => {
+        if (window.innerHeight >= 1000) return;
         const elem = document.getElementById('side');
         if (!elem) return;
         elem.style.width = '0';
