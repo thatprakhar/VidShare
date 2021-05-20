@@ -13,6 +13,7 @@ interface UserContextProps {
   user: firebase.User | null
   loading: boolean
   mediaLists: Array<mediaList>
+  setMediaLists: (param: Array<mediaList>) => void
 }
 
 export const UserContext = createContext({ user: null } as UserContextProps);
@@ -21,13 +22,19 @@ interface UserProviderState {
   user: firebase.User | null
   loading: boolean
   mediaLists: Array<mediaList>
+  setMediaLists: (param: Array<mediaList>) => void
 }
 
 class UserProvider extends Component<{},UserProviderState> {
   state = {
     user: null,
     loading: true,
-    mediaLists: []
+    mediaLists: [],
+    setMediaLists: (param: Array<mediaList>) => {
+      this.setState({
+        mediaLists: param
+      })
+    }
   };
 
   componentDidMount = () => {

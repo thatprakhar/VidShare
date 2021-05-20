@@ -30,6 +30,12 @@ const Home: React.FC<{}> = () => {
             list_title: newListTitle
         })
         .then(() => {
+            let newList = user.mediaLists;
+            newList.push({
+                list_title: newListTitle,
+                mediaItems: []
+            })
+            user.setMediaLists(newList);
             firestore.collection(newListTitle).doc('a').set({
                 temp: 'a'
             })
@@ -50,8 +56,7 @@ const Home: React.FC<{}> = () => {
         if (window.innerWidth >= 1000) return;
         const elem = document.getElementById('side');
         if (!elem) return;
-        elem.style.width = '90vw';
-        elem.style.height = '100vh';
+        elem.style.width = '100vw';
     }
 
     const closeSidebar = () => {
@@ -59,7 +64,6 @@ const Home: React.FC<{}> = () => {
         const elem = document.getElementById('side');
         if (!elem) return;
         elem.style.width = '0';
-        elem.style.height = '0';
     }
 
     const [loading, setLoading] = React.useState<boolean>(false);

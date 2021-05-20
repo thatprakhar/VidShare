@@ -221,7 +221,7 @@ a:hover {
 @media screen and (max-width: 1000px) {
     .sidebar {
         width: 0;
-        height: 0;
+        height: 100vh;
         transition: 1s;
         z-index: 2;
     }

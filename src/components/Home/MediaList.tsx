@@ -143,7 +143,7 @@ const MediaList: React.FC<MediaListProps> = ({
 
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    const { mediaLists } = React.useContext(UserContext);
+    const { mediaLists, setMediaLists } = React.useContext(UserContext);
 
     const addVideoToList = (list_title: string) => {
         if (!selectedVideo) return;
@@ -157,6 +157,13 @@ const MediaList: React.FC<MediaListProps> = ({
         .then(() => {
             setLoading(false);
             setAddingVideoToList(false);
+            let newList = mediaLists;
+            newList.forEach(list => {
+                if (list.list_title === list_title) {
+                    list.mediaItems.push(selectedVideo);
+                }
+            });
+            setMediaLists(newList);
         })
         .catch(err => console.log('err'))
     }
